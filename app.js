@@ -1,12 +1,12 @@
 const express = require('express');
 const app = express();
 
-const userRouter = require('./routers/users');
-const projectsRouter = require('./routers/projects');
-const tasksRouter = require('./routers/tasks');
+const userRouter = require('./src/routers/users');
+const projectsRouter = require('./src/routers/projects');
+const tasksRouter = require('./src/routers/tasks');
 
 
-require('./db/mongoose');
+require('./src/db/mongoose');
 app.use(express.json());
 
 app.use((req, res, next) => {
