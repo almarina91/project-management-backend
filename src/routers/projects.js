@@ -7,7 +7,11 @@ const { STATUS_CODE, ERROR} = require("../utils/constants");
 const router = new express.Router();
 const path = '/projects';
 
-// get all projects
+/**
+ * Gets all the projects.
+ * @const projects - contains all the projects
+ */
+
 router.get(path, auth, async (req,res)=>{
         const projects = await Project.find({})
         try {
@@ -17,7 +21,11 @@ router.get(path, auth, async (req,res)=>{
         }
 })
 
-// get all projects connected to user
+/**
+ * Gets all the projects related to user.
+ * @const projects - contains all the projects related to user
+ */
+
 router.get(`${path}/:userID`, auth, async (req,res)=>{
         const projects = await Project.find({usersInvolved: {$elemMatch:{id:req.params.userID}}})
         try {
@@ -27,7 +35,11 @@ router.get(`${path}/:userID`, auth, async (req,res)=>{
         }
 })
 
-// create a new project
+/**
+ * Creates a new project.
+ * @const project - creates a new project
+ */
+
 router.post(path, async (req,res)=>{
         const project = new Project(req.body);
         try {
@@ -38,7 +50,11 @@ router.post(path, async (req,res)=>{
         }
 })
 
-// modify a project - role has to be checked!!!!!!!
+/**
+ * Modifies a project.
+ * @const project - gets the project from db and modifies it
+ */
+
 router.patch(`${path}/:id`, async (req,res)=>{
         const project = await Project.findByIdAndUpdate(req.params.id, req.body,{new:true, runValidators:true})
         try {
@@ -50,7 +66,12 @@ router.patch(`${path}/:id`, async (req,res)=>{
         }
 })
 
-// delete a project (and tasks related to it)
+/**
+ * Deletes a project and tasks related to it.
+ * @const project - finds the project and removes it
+ * @const tasks - finds all the task related
+ */
+
 router.delete(`${path}/:id`, async (req,res)=>{
         const project = await Project.findByIdAndDelete(req.params.id)
         try {

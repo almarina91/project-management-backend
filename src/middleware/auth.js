@@ -2,6 +2,13 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {STATUS_CODE} = require("../utils/constants");
 
+/**
+ * Authenticates the user.
+ * @const token - gets a token provided in request header
+ * @const decoded - checks the token provided
+ * @const user - gets the user data
+ */
+
 const auth = async (req,res,next) =>{
     try {
         const token = req.header('Authorization').replace('Bearer ', '')

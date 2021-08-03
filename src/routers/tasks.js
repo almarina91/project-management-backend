@@ -7,7 +7,11 @@ const Task = require('../models/task');
 const { STATUS_CODE, ERROR } = require("../utils/constants");
 const path = '/tasks';
 
-// get all tasks
+/**
+ * Gets all the tasks.
+ * @const tasks - contains all the tasks
+ */
+
 router.get(path, auth, async (req,res)=> {
         const tasks = await Task.find({})
         try {
@@ -19,7 +23,11 @@ router.get(path, auth, async (req,res)=> {
         }
 })
 
-// get all tasks for a specific project
+/**
+ * Gets all the tasks for a specific project.
+ * @const tasks - contains all the tasks for that project
+ */
+
 router.get(`${path}/:id`, auth, async (req,res)=> {
         const tasks = await Task.find({projectID: req.params.id})
         try {
@@ -31,7 +39,11 @@ router.get(`${path}/:id`, auth, async (req,res)=> {
         }
 })
 
-//get a specific task
+/**
+ * Gets a specific task
+ * @const task - finds the task in db
+ */
+
 router.get(`${path}/spec/:id`, auth, async(req,res)=>{
     const task = await Task.find({_id:req.params.id})
     if (task.length !== 0){
@@ -45,7 +57,11 @@ router.get(`${path}/spec/:id`, auth, async(req,res)=>{
     }
 })
 
-//get all tasks of a user
+/**
+ * Gets all the tasks of a user.
+ * @const tasks - contains all the tasks related to the user
+ */
+
 router.get(`${path}/user/:id`, auth, async (req,res)=> {
         const tasks = await Task.find({assignee: req.params.id})
         try{
@@ -57,7 +73,11 @@ router.get(`${path}/user/:id`, auth, async (req,res)=> {
         }
 })
 
-// creating a new task
+/**
+ * Creates a new task.
+ * @const task - creates a new task
+ */
+
 router.post(path, auth, async (req,res)=>{
     const task = new Task(req.body)
     try {
@@ -68,7 +88,11 @@ router.post(path, auth, async (req,res)=>{
     }
 })
 
-// modify a task
+/**
+ * Modifies a task.
+ * @const task - finds a task in db
+ */
+
 router.patch(`${path}/:id`, auth, async (req,res)=>{
     const task = await Task.find({_id:req.params.id})
     if (task.length !==0){
@@ -84,7 +108,11 @@ router.patch(`${path}/:id`, auth, async (req,res)=>{
 
 })
 
-// delete a task
+/**
+ * Removes a task.
+ * @const task - finds a task in db and removes it
+ */
+
 router.delete(`${path}/:id`, async(req,res)=>{
         const task = await Task.findByIdAndDelete(req.params.id)
         try {

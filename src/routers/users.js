@@ -6,7 +6,11 @@ const {STATUS_CODE, ERROR} = require("../utils/constants");
 const path = '/users';
 const allowedUpdates = ['username', 'password', 'email', 'name', 'surname'];
 
-// getting all users - check the role!!!!
+/**
+ * Gets all the users.
+ * @const users - contains all the users
+ */
+
 router.get(path, auth, async (req,res)=>{
         const users = await User.find({})
         try {
@@ -18,7 +22,11 @@ router.get(path, auth, async (req,res)=>{
         }
 })
 
-//getting a specific user
+/**
+ * Gets a specific user.
+ * @const user - finds a user in db
+ */
+
 router.get(`${path}/:id`, auth, async(req,res)=>{
         const user = await User.find({_id:req.params.id})
         try {
@@ -30,7 +38,12 @@ router.get(`${path}/:id`, auth, async(req,res)=>{
         }
 })
 
-// creating a new user
+/**
+ * Creates a new user.
+ * @const user - creates a new user in db
+ * @const token - generates a new token for a user
+ */
+
 router.post(path, async (req,res)=>{
     const user = new User(req.body)
     try {
@@ -42,7 +55,12 @@ router.post(path, async (req,res)=>{
     }
 })
 
-// login a user
+/**
+ * Logs in a user.
+ * @const user - finds a user in db
+ * @const token - generates a new token for a user
+ */
+
 router.post(`${path}/login`, async(req,res)=>{
     try {
         const user = await User.findByCredentials(req.body.email, req.body.password);
@@ -53,7 +71,10 @@ router.post(`${path}/login`, async(req,res)=>{
     }
 })
 
-// logout a user
+/**
+ * Logs out a user by removing a token from token list in db.
+ */
+
 router.post(`${path}/logout`, auth, async (req,res)=>{
     try {
         req.user.tokens = req.user.tokens.filter(token => {
@@ -66,7 +87,10 @@ router.post(`${path}/logout`, auth, async (req,res)=>{
     }
 })
 
-// logout a user from all sessions
+/**
+ * Logs out a user from all places by removing all the tokens for a user in db.
+ */
+
 router.post(`${path}/logoutAll`, auth, async (req,res)=>{
     try {
         req.user.tokens = [];
@@ -77,7 +101,12 @@ router.post(`${path}/logoutAll`, auth, async (req,res)=>{
     }
 })
 
-// modify a user
+/**
+ * Modifies a user.
+ * @const updates - contains the updates user wants to perform
+ * @const isValidOperation - checks if the updates are allowed
+ */
+
 router.patch(`${path}/:id`, auth, async (req,res)=>{
         const updates = Object.keys(req.body);
         const isValidOperation = updates.every(update => allowedUpdates.includes(update));
@@ -95,7 +124,11 @@ router.patch(`${path}/:id`, auth, async (req,res)=>{
         }
 })
 
-// delete a user
+/**
+ * Removes a user.
+ * @const user - finds the user and removes the user from the db
+ */
+
 router.delete(`${path}/:id`, auth, async(req,res)=>{
         const user = await User.findByIdAndDelete(req.params.id)
         try {
