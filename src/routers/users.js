@@ -2,6 +2,7 @@ const express = require('express');
 const router = new express.Router();
 const auth = require('../middleware/auth');
 const User = require('../models/user');
+const log = require('../utils/log');
 const {STATUS_CODE, ERROR} = require("../utils/constants");
 const path = '/users';
 const allowedUpdates = ['username', 'password', 'email', 'name', 'surname'];
@@ -18,6 +19,7 @@ router.get(path, auth, async (req,res)=>{
                 res.status(STATUS_CODE.ok).send(users) :
                 res.status(STATUS_CODE.notFound).send(ERROR.notFound)
         } catch(e) {
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
@@ -34,6 +36,7 @@ router.get(`${path}/:id`, auth, async(req,res)=>{
                 res.status(STATUS_CODE.ok).send(user) :
                 res.status(STATUS_CODE.notFound).send(ERROR.notFound)
         } catch(e) {
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
@@ -51,6 +54,7 @@ router.post(path, async (req,res)=>{
         await user.save()
         res.status(STATUS_CODE.created).send({user,token})
     } catch(e) {
+        await log(e)
         res.status(STATUS_CODE.badRequest).send(e)
     }
 })
@@ -67,6 +71,7 @@ router.post(`${path}/login`, async(req,res)=>{
         const token = await user.generateAuthToken();
         res.send({user, token})
     } catch(e){
+        await log(e)
         res.status(STATUS_CODE.badRequest).send(e)
     }
 })
@@ -83,6 +88,7 @@ router.post(`${path}/logout`, auth, async (req,res)=>{
         await req.user.save()
         res.send()
     } catch(e) {
+        await log(e)
         res.status(STATUS_CODE.badRequest).send(e);
     }
 })
@@ -97,6 +103,7 @@ router.post(`${path}/logoutAll`, auth, async (req,res)=>{
         await req.user.save()
         res.send()
     } catch(e) {
+        await log(e)
         res.status(STATUS_CODE.badRequest).send()
     }
 })
@@ -120,6 +127,7 @@ router.patch(`${path}/:id`, auth, async (req,res)=>{
             await req.user.save()
             res.send(req.user)
         } catch (e) {
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
@@ -136,6 +144,7 @@ router.delete(`${path}/:id`, auth, async(req,res)=>{
                 res.status(STATUS_CODE.ok).send(user) :
                 res.status(STATUS_CODE.notFound).send(ERROR.notFound)
         } catch (e) {
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })

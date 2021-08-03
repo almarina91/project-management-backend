@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const {STATUS_CODE} = require("../utils/constants");
+const log = require('../utils/log');
 
 /**
  * Authenticates the user.
@@ -22,6 +23,7 @@ const auth = async (req,res,next) =>{
         req.user = user;
         next()
     } catch(e) {
+        await log(e)
         res.status(STATUS_CODE.notAllowed).send(e)
     }
 }

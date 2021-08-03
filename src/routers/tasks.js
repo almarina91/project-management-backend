@@ -2,6 +2,7 @@ const express = require('express');
 const router = new express.Router();
 
 const auth = require('../middleware/auth');
+const log = require('../utils/log');
 
 const Task = require('../models/task');
 const { STATUS_CODE, ERROR } = require("../utils/constants");
@@ -19,6 +20,7 @@ router.get(path, auth, async (req,res)=> {
                 res.status(STATUS_CODE.ok).send(tasks) :
                 res.status(STATUS_CODE.notFound).send(ERROR.notFound)
         } catch(e){
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
@@ -35,6 +37,7 @@ router.get(`${path}/:id`, auth, async (req,res)=> {
                 res.status(STATUS_CODE.ok).send(tasks) :
                 res.status(STATUS_CODE.notFound).send(ERROR.notFound)
         } catch(e){
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
@@ -50,6 +53,7 @@ router.get(`${path}/spec/:id`, auth, async(req,res)=>{
             try {
                 res.status(STATUS_CODE.ok).send(task)
             } catch (e) {
+                await log(e)
                 res.status(STATUS_CODE.badRequest).send(e)
             }
     } else {
@@ -69,6 +73,7 @@ router.get(`${path}/user/:id`, auth, async (req,res)=> {
                 res.status(STATUS_CODE.ok).send(tasks) :
                 res.status(STATUS_CODE.notFound).send(ERROR.notFound)
         } catch(e){
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
@@ -84,6 +89,7 @@ router.post(path, auth, async (req,res)=>{
         await task.save()
         res.status(STATUS_CODE.created).send(task)
     } catch (e) {
+        await log(e)
         res.status(STATUS_CODE.badRequest).send(e)
     }
 })
@@ -100,6 +106,7 @@ router.patch(`${path}/:id`, auth, async (req,res)=>{
            try {
               res.status(STATUS_CODE.ok).send(taskModified) ;
            } catch (e) {
+               await log(e)
                res.status(STATUS_CODE.badRequest).send(e)
            }
    } else {
@@ -120,6 +127,7 @@ router.delete(`${path}/:id`, async(req,res)=>{
                 res.status(STATUS_CODE.ok).send(task) :
                 res.status(STATUS_CODE.notFound).send(ERROR.notFound)
         } catch(e) {
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })

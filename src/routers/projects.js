@@ -3,6 +3,7 @@ const Project = require('../models/project');
 const Task = require('../models/task');
 const auth = require('../middleware/auth');
 const { STATUS_CODE, ERROR} = require("../utils/constants");
+const log = require('../utils/log');
 
 const router = new express.Router();
 const path = '/projects';
@@ -17,6 +18,7 @@ router.get(path, auth, async (req,res)=>{
         try {
             res.status(STATUS_CODE.ok).send(projects)
         } catch (e) {
+            await log(e)
             res.status(STATUS_CODE.notFound).send(e)
         }
 })
@@ -31,6 +33,7 @@ router.get(`${path}/:userID`, auth, async (req,res)=>{
         try {
             res.status(STATUS_CODE.ok).send(projects)
         } catch (e) {
+            await log(e)
             res.status(STATUS_CODE.notFound).send(e)
         }
 })
@@ -46,6 +49,7 @@ router.post(path, async (req,res)=>{
             await project.save()
             res.status(STATUS_CODE.created).send(project)
         } catch (e) {
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
@@ -62,6 +66,7 @@ router.patch(`${path}/:id`, async (req,res)=>{
                 res.status(STATUS_CODE.ok).send(project) :
                 res.status(STATUS_CODE.badRequest).send(ERROR.notFound)
         } catch (e) {
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e);
         }
 })
@@ -82,9 +87,11 @@ router.delete(`${path}/:id`, async (req,res)=>{
                 }
                 res.status(STATUS_CODE.ok).send(project)
             } else {
+                await log(e)
                 res.status(STATUS_CODE.badRequest).send(ERROR.notFound)
             }
         } catch (e){
+            await log(e)
             res.status(STATUS_CODE.badRequest).send(e)
         }
 })
