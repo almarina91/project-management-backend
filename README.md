@@ -1,6 +1,6 @@
 ![Logo](images/logo.png)
 
-#Project Management App
+# Project Management App
 
 **App for managing small sized projects**
 
@@ -23,10 +23,10 @@ Available roles for the users are Administrator, Project Manager and Developer.
 
 ### Built With
 
-* [MongoDB]()
-* [Express]()
-* [React]()
-* [Node.js]()
+* MongoDB
+* Express
+* React
+* Node.js
 
 
 
@@ -45,13 +45,22 @@ This is an example of how to list things you need to use the software and how to
 
 ### Installation
 
-1. Clone the repo
+1. Clone the repos into the same root folder
    ```sh
    git clone https://github.com/almarina91/project-management-backend.git
+   git clone https://github.com/almarina91/project-management-frontend.git
    ```
-2. Install NPM packages
+2. Install NPM packages for frontend and backend separately using:
    ```sh
    npm install
+   ```
+3. Starting the development mode from apollo-backend folder
+    ```sh
+   npm start-dev
+   ```
+4. Starting the production mode from apollo-backend folder
+    ```sh
+   npm start
    ```
 
 
